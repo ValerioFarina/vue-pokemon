@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12 col-xs-6 col-md-4 col-lg-3" v-for="(pokemon, index) in pokemons" :key="index">
-                <a class="card btn mt-4 mb-4" @click="showSinglePokemon(pokemon.url)">
+                <a class="card btn mt-4 mb-4" @click="pokemonClicked(pokemon.url)">
                     <div class="card-body">
                         <h5 class="card-title">
                             {{ pokemon.name }}
@@ -23,8 +23,8 @@ export default {
     }
   },
   methods: {
-      showSinglePokemon(url) {
-          console.log(url);
+      pokemonClicked(url) {
+          this.$emit('pokemon-clicked', url);
       }
   },
   mounted() {
@@ -33,7 +33,6 @@ export default {
       .get(self.baseUrl + 'pokemon')
       .then((response) => {
           self.pokemons = response.data.results;
-          console.log(self.pokemons);
       });
   }
 };

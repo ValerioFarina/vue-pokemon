@@ -2,7 +2,7 @@
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png" />
     <CustomTitle titleText="Pokemon" />
-    <Pokemons />
+    <Pokemons @pokemon-clicked="showSinglePokemon" />
   </div>
 </template>
 
@@ -15,6 +15,22 @@ export default {
   components: {
     CustomTitle,
     Pokemons
+  },
+  data() {
+      return {
+          pokemonClicked: false
+      }
+  },
+  methods: {
+      showSinglePokemon(url) {
+          const self = this;
+          self.pokemonClicked = true;
+          self.axios
+          .get(url)
+          .then((response) => {
+              console.log(response.data);;
+          });
+      }
   }
 };
 </script>
