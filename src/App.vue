@@ -2,34 +2,64 @@
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png" />
     <CustomTitle titleText="Pokemon" />
-    <Pokemons @pokemon-clicked="showSinglePokemon" />
+    <button class="btn btn-success mb-5" v-if="pokemonClicked" @click="showAllPokemons">
+        Torna a tutti i pokemon
+    </button>
+    <SinglePokemon :info="pokemonInfo" v-if="pokemonClicked" />
+    <Pokemons @pokemon-clicked="showSinglePokemon" v-else />
   </div>
 </template>
 
 <script>
 import CustomTitle from "./components/CustomTitle.vue";
 import Pokemons from "./pages/Pokemons.vue";
+import SinglePokemon from "./components/SinglePokemon.vue";
 
 export default {
   name: "App",
   components: {
     CustomTitle,
-    Pokemons
+    Pokemons,
+    SinglePokemon
   },
   data() {
       return {
-          pokemonClicked: false
+          pokemonClicked: false,
+          pokemonInfo: {
+              name: '',
+              types: [],
+              image: '',
+              abilities: []
+          }
       }
   },
   methods: {
       showSinglePokemon(url) {
           const self = this;
-          self.pokemonClicked = true;
           self.axios
           .get(url)
           .then((response) => {
-              console.log(response.data);;
+              var singlePokemon = response.data;
+              self.pokemonInfo.name = singlePokemon.name;
+              self.pokemonInfo.image = singlePokemon.sprites.other["dream_world"]["front_default"];
+              singlePokemon.types.forEach((item) => {
+                  self.pokemonInfo.types.push(item.type.name);
+              });
+              singlePokemon.abilities.forEach((item) => {
+                  self.pokemonInfo.abilities.push(item.ability.name);
+              });
+              self.pokemonClicked = true;
           });
+      },
+
+      showAllPokemons() {
+          this.pokemonClicked = false;
+          this.pokemonInfo = {
+              name: '',
+              types: [],
+              image: '',
+              abilities: []
+          };
       }
   }
 };
