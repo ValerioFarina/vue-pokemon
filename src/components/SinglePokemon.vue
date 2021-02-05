@@ -9,7 +9,7 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <img :src="info.image" class="mw-25 mb-5">
+                <img :src="info.image" class="mb-5">
             </div>
         </div>
         <div class="row">
@@ -37,3 +37,9 @@
         }
     }
 </script>
+
+<style scoped>
+    img {
+        max-width: 100%;
+    }
+</style>

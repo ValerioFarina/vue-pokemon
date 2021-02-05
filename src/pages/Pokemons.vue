@@ -2,21 +2,20 @@
     <div class="container">
         <div class="row">
             <div class="col-12 col-sm-6 col-md-4 col-lg-3" v-for="(pokemon, index) in pokemons" :key="index">
-                <a class="card btn mt-4 mb-4" @click="pokemonClicked(pokemon.url)">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            {{ pokemon.name }}
-                        </h5>
-                    </div>
-                </a>
+                <Card :title="pokemon.name" :url="pokemon.url" :clickHandler="pokemonClicked" />
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import Card from "./../components/Card.vue";
+
 export default {
   name: "Pokemons",
+  components: {
+      Card
+  },
   data() {
     return {
         pokemons: []
