@@ -2,14 +2,16 @@
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png" />
     <CustomTitle titleText="Pokemon" />
-    <CustomButton text="Torna a tutti i pokemon" :show="pokemonClicked" :clickHandler="showAllPokemons" />
-    <SinglePokemon :info="pokemonInfo" v-if="pokemonClicked" />
+    <CustomForm @newSearch="searchPokemon" buttonText="Cerca" inputPlaceHolder="Cerca un pokemon" v-if="!isSinglePokemonVisible" />
+    <CustomButton text="Torna a tutti i pokemon" v-if="isSinglePokemonVisible" @click.native="showAllPokemons" />
+    <SinglePokemon :info="pokemonInfo" v-if="isSinglePokemonVisible" />
     <Pokemons @pokemon-clicked="showSinglePokemon" v-else />
   </div>
 </template>
 
 <script>
 import CustomTitle from "./components/CustomTitle.vue";
+import CustomForm from "./components/CustomForm.vue";
 import CustomButton from "./components/CustomButton.vue";
 import Pokemons from "./pages/Pokemons.vue";
 import SinglePokemon from "./components/SinglePokemon.vue";
@@ -18,13 +20,14 @@ export default {
   name: "App",
   components: {
     CustomTitle,
+    CustomForm,
     CustomButton,
     Pokemons,
     SinglePokemon
   },
   data() {
       return {
-          pokemonClicked: false,
+          isSinglePokemonVisible: false,
           pokemonInfo: {
               name: '',
               types: [],
@@ -48,18 +51,37 @@ export default {
               singlePokemon.abilities.forEach((item) => {
                   self.pokemonInfo.abilities.push(item.ability.name);
               });
-              self.pokemonClicked = true;
+              self.isSinglePokemonVisible = true;
           });
       },
 
       showAllPokemons() {
-          this.pokemonClicked = false;
+          this.isSinglePokemonVisible = false;
           this.pokemonInfo = {
               name: '',
               types: [],
               image: '',
               abilities: []
           };
+      },
+
+      searchPokemon(searchedPokemon) {
+          var self = this;
+          searchedPokemon = searchedPokemon.toLowerCase();
+          self.axios
+            .get(self.baseUrl + 'pokemon/' + searchedPokemon)
+            .then((response) => {
+                var singlePokemon = response.data;
+                self.pokemonInfo.name = singlePokemon.name;
+                self.pokemonInfo.image = singlePokemon.sprites.other["dream_world"]["front_default"];
+                singlePokemon.types.forEach((item) => {
+                    self.pokemonInfo.types.push(item.type.name);
+                });
+                singlePokemon.abilities.forEach((item) => {
+                    self.pokemonInfo.abilities.push(item.ability.name);
+                });
+                self.isSinglePokemonVisible = true;
+            });
       }
   }
 };
