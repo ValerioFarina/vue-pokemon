@@ -2,9 +2,7 @@
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png" />
     <CustomTitle titleText="Pokemon" />
-    <button class="btn btn-success mb-5" v-if="pokemonClicked" @click="showAllPokemons">
-        Torna a tutti i pokemon
-    </button>
+    <CustomButton text="Torna a tutti i pokemon" :show="pokemonClicked" :clickHandler="showAllPokemons" />
     <SinglePokemon :info="pokemonInfo" v-if="pokemonClicked" />
     <Pokemons @pokemon-clicked="showSinglePokemon" v-else />
   </div>
@@ -12,6 +10,7 @@
 
 <script>
 import CustomTitle from "./components/CustomTitle.vue";
+import CustomButton from "./components/CustomButton.vue";
 import Pokemons from "./pages/Pokemons.vue";
 import SinglePokemon from "./components/SinglePokemon.vue";
 
@@ -19,6 +18,7 @@ export default {
   name: "App",
   components: {
     CustomTitle,
+    CustomButton,
     Pokemons,
     SinglePokemon
   },
