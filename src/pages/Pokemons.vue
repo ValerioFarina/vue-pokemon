@@ -2,16 +2,13 @@
     <div class="container">
         <div class="row">
             <div class="col-12 col-xs-6 col-md-4 col-lg-3" v-for="(pokemon, index) in pokemons" :key="index">
-                <div class="card mt-2 mb-2">
+                <a class="card btn mt-4 mb-4" @click="showSinglePokemon(pokemon.url)">
                     <div class="card-body">
                         <h5 class="card-title">
                             {{ pokemon.name }}
                         </h5>
-                        <p class="card-text">
-                            {{ pokemon.url }}
-                        </p>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
     </div>
@@ -24,6 +21,11 @@ export default {
     return {
         pokemons: []
     }
+  },
+  methods: {
+      showSinglePokemon(url) {
+          console.log(url);
+      }
   },
   mounted() {
       const self = this;
