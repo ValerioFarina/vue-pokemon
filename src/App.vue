@@ -2,16 +2,19 @@
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png" />
     <CustomTitle titleText="Pokemon" />
+    <Pokemons />
   </div>
 </template>
 
 <script>
 import CustomTitle from "./components/CustomTitle.vue";
+import Pokemons from "./pages/Pokemons.vue";
 
 export default {
   name: "App",
   components: {
-    CustomTitle
+    CustomTitle,
+    Pokemons
   }
 };
 </script>
